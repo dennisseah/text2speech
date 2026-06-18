@@ -1,5 +1,22 @@
 # text2speech
 
+The text2speech package provides a simple interface to convert text to speech
+using Azure AI Service. It uses the Azure Cognitive Services Speech SDK to
+perform text-to-speech conversion. The package is designed to be easy to use and
+can be integrated into any Python project. It also supports multiple voices and
+languages, allowing you to customize the speech output to suit your needs.
+
+usages:
+
+```sh
+python -m main -i input.txt -o output.wav -v gb-thomas
+```
+
+The generated `output.wav` file will contain the speech synthesized from the
+text in `input.txt` using the `gb-thomas` voice. This `output.wav` file can then
+be played using any media player that supports WAV files. It is located in the
+`outputs` directory of the project.
+
 ## Prerequisites
 
 1. Install uv [guide](https://docs.astral.sh/uv/getting-started/installation/)

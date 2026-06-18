@@ -22,15 +22,12 @@ def _configure_speech_synthesizer(voice_name: Voice) -> speech_sdk.SpeechConfig:
     return speech_config
 
 
-def convert(
-    text: str, output_file: str = "output.wav", voice: Voice = Voice.EN_GB_THOMAS
-):
+def convert(text: str, output_file: str, voice: Voice = Voice.EN_GB_THOMAS):
     """Convert text to speech and save it to an audio file.
 
     Args:
         text (str): text to convert to speech
         output_file (str, optional): output file for the generated audio.
-            Defaults to "output.wav".
         voice (Voice, optional): voice to be used. Defaults to Voice.EN_GB_THOMAS.
     """
     speech_synthesizer = speech_sdk.SpeechSynthesizer(

@@ -1,4 +1,5 @@
 import argparse
+from pathlib import Path
 
 from text2speech.main import convert
 from text2speech.voices import Voice
@@ -34,7 +35,14 @@ def main():
     with open(args.input, encoding="utf-8") as f:
         text = f.read()
 
-    convert(text, output_file=args.output, voice=VOICE_CHOICES[args.voice])
+    output_dir = Path("outputs")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    convert(
+        text,
+        output_file=str(output_dir / args.output),
+        voice=VOICE_CHOICES[args.voice],
+    )
 
 
 if __name__ == "__main__":

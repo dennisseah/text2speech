@@ -51,7 +51,7 @@ def test_convert_no_result(mocker: MockerFixture):
     mocker.patch.object(t2s_main.speech_sdk.audio, "AudioOutputConfig")
 
     with pytest.raises(RuntimeError, match="No result returned"):
-        convert("hello")
+        convert("hello", output_file="out.wav")
 
 
 def test_convert_canceled(mocker: MockerFixture):
@@ -67,4 +67,4 @@ def test_convert_canceled(mocker: MockerFixture):
     mocker.patch.object(t2s_main.speech_sdk.audio, "AudioOutputConfig")
 
     with pytest.raises(RuntimeError, match="Speech synthesis canceled"):
-        convert("hello")
+        convert("hello", output_file="out.wav")
