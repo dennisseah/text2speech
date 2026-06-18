@@ -5,11 +5,7 @@ from text2speech.main import TextToSpeech
 from text2speech.voices import Voice
 
 VOICE_CHOICES = {
-    "gb-thomas": Voice.EN_GB_THOMAS,
-    "sg-wayne": Voice.EN_SG_WAYNE,
-    "us-monica": Voice.EN_US_MONICA,
-    "us-eric": Voice.EN_US_ERIC,
-    "in-neerja": Voice.EN_IN_NEERJA,
+    voice.name.removeprefix("EN_").lower().replace("_", "-"): voice for voice in Voice
 }
 
 
