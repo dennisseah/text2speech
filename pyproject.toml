@@ -1,0 +1,56 @@
+[project]
+name = "text2speech"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "azure-cognitiveservices-speech>=1.50.0",
+    "azure-core>=1.41.0",
+    "azure-identity>=1.25.3",
+    "pydantic-settings>=2.14.1",
+]
+
+[dependency-groups]
+dev = [
+    "pip-audit>=2.10.1",
+    "pre-commit>=4.6.0",
+    "pyright>=1.1.410",
+    "pytest>=9.1.0",
+    "pytest-asyncio>=1.4.0",
+    "pytest-cov>=7.1.0",
+    "pytest-mock>=3.15.1",
+    "ruff>=0.15.17",
+]
+
+[tool.ruff]
+exclude = ["typings", ".venv"]
+
+[tool.ruff.lint]
+preview = true
+select = ["E", "W", "F", "I", "TID"]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+exclude = ["typings", ".venv", ".vscode", ".git", "**/node_modules", "**/__pycache__", "**/.*"]
+
+[tool.mypy]
+[[tool.mypy.overrides]]
+module = ["azure.cognitiveservices.speech.*"]
+ignore_missing_imports = true
+
+[tool.coverage.report]
+fail_under = 90
+
+[tool.coverage.run]
+source = ["memory_type_labeling"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-v"
+

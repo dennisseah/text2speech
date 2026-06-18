@@ -1,0 +1,50 @@
+import azure.cognitiveservices.speech as speech_sdk  # type: ignore[import-untyped]
+from azure.identity import DefaultAzureCredential
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from text2speech.voices import Voice
+
+
+class TextToSpeechSetting(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+    speech_endpoint: str
+
+
+def _configure_speech_synthesizer(voice_name: Voice) -> speech_sdk.SpeechConfig:
+    credential = DefaultAzureCredential()
+    endpoint = TextToSpeechSetting().speech_endpoint  # type: ignore[call-arg]
+
+    speech_config = speech_sdk.SpeechConfig(
+        token_credential=credential, endpoint=endpoint
+    )
+    speech_config.speech_synthesis_voice_name = voice_name
+    return speech_config
+
+
+def convert(
+    text: str, output_file: str = "output.wav", voice: Voice = Voice.EN_GB_THOMAS
+):
+    """Convert text to speech and save it to an audio file.
+
+    Args:
+        text (str): text to convert to speech
+        output_file (str, optional): output file for the generated audio.
+            Defaults to "output.wav".
+        voice (Voice, optional): voice to be used. Defaults to Voice.EN_GB_THOMAS.
+    """
+    speech_synthesizer = speech_sdk.SpeechSynthesizer(
+        speech_config=_configure_speech_synthesizer(voice),
+        audio_config=speech_sdk.audio.AudioOutputConfig(filename=output_file),
+    )
+
+    speech_synthesis_result = speech_synthesizer.speak_text_async(text).get()
+
+    if speech_synthesis_result is None:
+        raise RuntimeError("Speech synthesis failed: No result returned")
+
+    if speech_synthesis_result.reason == speech_sdk.ResultReason.Canceled:
+        cancellation_details = speech_synthesis_result.cancellation_details
+        raise RuntimeError(
+            "Speech synthesis canceled: {}".format(cancellation_details.reason)
+        )
