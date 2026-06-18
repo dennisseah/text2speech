@@ -1,4 +1,6 @@
-# text2speech
+# Azure AI Service Text-to-Speech and Speech-to-Text
+
+## Text to speech
 
 The text2speech package provides a simple interface to convert text to speech
 using Azure AI Service. It uses the Azure Cognitive Services Speech SDK to
@@ -9,13 +11,31 @@ languages, allowing you to customize the speech output to suit your needs.
 usages:
 
 ```sh
-python -m main -i input.txt -o output.wav -v gb-thomas
+python -m txt2speech -i input.txt -o output.wav -v gb-thomas
 ```
 
 The generated `output.wav` file will contain the speech synthesized from the
 text in `input.txt` using the `gb-thomas` voice. This `output.wav` file can then
 be played using any media player that supports WAV files. It is located in the
 `outputs` directory of the project.
+
+## Speech to text
+
+The speech2txt package provides a simple interface to convert speech to text
+using Azure AI Service. It uses the Azure Cognitive Services Speech SDK to
+perform speech-to-text conversion. The package is designed to be easy to use and
+can be integrated into any Python project. It also supports multiple languages,
+allowing you to transcribe speech in different languages.
+
+usages:
+
+```sh
+python -m speech2txt -i input.wav -o output.txt
+```
+
+The generated `output.txt` file will contain the transcribed text from thespeech
+in `input.wav`. This `output.txt` file is located in the `outputs` directory of
+the project.
 
 ## Prerequisites
 

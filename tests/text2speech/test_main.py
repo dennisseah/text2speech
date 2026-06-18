@@ -4,7 +4,7 @@ import pytest
 from pytest_mock import MockerFixture
 
 from text2speech import main as t2s_main
-from text2speech.main import _configure_speech_synthesizer, convert
+from text2speech.main import TextToSpeech, _configure_speech_synthesizer
 from text2speech.voices import Voice
 
 
@@ -36,7 +36,7 @@ def test_convert_success(mocker: MockerFixture):
     )
     mocker.patch.object(t2s_main.speech_sdk.audio, "AudioOutputConfig")
 
-    convert("hello world", output_file="out.wav", voice=Voice.EN_GB_THOMAS)
+    TextToSpeech()("hello world", output_file="out.wav", voice=Voice.EN_GB_THOMAS)
 
     synthesizer.speak_text_async.assert_called_once_with("hello world")
 
@@ -51,7 +51,7 @@ def test_convert_no_result(mocker: MockerFixture):
     mocker.patch.object(t2s_main.speech_sdk.audio, "AudioOutputConfig")
 
     with pytest.raises(RuntimeError, match="No result returned"):
-        convert("hello", output_file="out.wav")
+        TextToSpeech()("hello", output_file="out.wav")
 
 
 def test_convert_canceled(mocker: MockerFixture):
@@ -67,4 +67,4 @@ def test_convert_canceled(mocker: MockerFixture):
     mocker.patch.object(t2s_main.speech_sdk.audio, "AudioOutputConfig")
 
     with pytest.raises(RuntimeError, match="Speech synthesis canceled"):
-        convert("hello", output_file="out.wav")
+        TextToSpeech()("hello", output_file="out.wav")

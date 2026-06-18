@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 
-from text2speech.main import convert
+from text2speech.main import TextToSpeech
 from text2speech.voices import Voice
 
 VOICE_CHOICES = {
@@ -38,7 +38,8 @@ def main():
     output_dir = Path("outputs")
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    convert(
+    text_to_speech = TextToSpeech()
+    text_to_speech(
         text,
         output_file=str(output_dir / args.output),
         voice=VOICE_CHOICES[args.voice],
