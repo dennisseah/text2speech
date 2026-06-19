@@ -3,9 +3,12 @@ from unittest.mock import MagicMock
 import pytest
 from pytest_mock import MockerFixture
 
-from text2speech import main as t2s_main
-from text2speech.main import TextToSpeech, _configure_speech_synthesizer
-from text2speech.voices import Voice
+from azure_translation.text2speech import main as t2s_main
+from azure_translation.text2speech.main import (
+    TextToSpeech,
+    _configure_speech_synthesizer,
+)
+from azure_translation.text2speech.voices import Voice
 
 
 def test_configure_speech_synthesizer(mocker: MockerFixture):

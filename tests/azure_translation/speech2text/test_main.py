@@ -4,8 +4,8 @@ from unittest.mock import MagicMock
 import pytest
 from pytest_mock import MockerFixture
 
-from speech2text import main as s2t_main
-from speech2text.main import (
+from azure_translation.speech2text import main as s2t_main
+from azure_translation.speech2text.main import (
     SpeechToText,
     _configure_speech_recognizer,
     _recognize_continuous,

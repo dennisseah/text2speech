@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 
-from speech2text.main import SpeechToText
+from azure_translation.speech2text.main import SpeechToText
 
 
 def main():

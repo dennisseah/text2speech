@@ -1,4 +1,4 @@
-from text2speech.voices import Voice
+from azure_translation.text2speech.voices import Voice
 
 
 def test_voice_values():

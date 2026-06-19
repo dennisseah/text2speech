@@ -2,7 +2,7 @@ import azure.cognitiveservices.speech as speech_sdk  # type: ignore[import-untyp
 from azure.identity import DefaultAzureCredential
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from text2speech.voices import Voice
+from azure_translation.text2speech.voices import Voice
 
 
 class TextToSpeechSetting(BaseSettings):

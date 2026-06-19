@@ -1,8 +1,8 @@
 import argparse
 from pathlib import Path
 
-from text2speech.main import TextToSpeech
-from text2speech.voices import Voice
+from azure_translation.text2speech.main import TextToSpeech
+from azure_translation.text2speech.voices import Voice
 
 VOICE_CHOICES = {
     voice.name.removeprefix("EN_").lower().replace("_", "-"): voice for voice in Voice

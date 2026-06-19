@@ -27,4 +27,4 @@ tasks:
     desc: "Runs unit tests with pytest"
     cmds:
       - uv run python -m pytest -p no:warnings --cov-report term-missing
-        --cov=text2speech --cov=speech2text tests
+        --cov=azure_translation tests
