@@ -4,32 +4,12 @@ import pytest
 from pytest_mock import MockerFixture
 
 from azure_translation.text2speech import main as t2s_main
-from azure_translation.text2speech.main import (
-    TextToSpeech,
-    _configure_speech_synthesizer,
-)
+from azure_translation.text2speech.main import TextToSpeech
 from azure_translation.text2speech.voices import Voice
 
 
-def test_configure_speech_synthesizer(mocker: MockerFixture):
-    mocker.patch.object(t2s_main, "DefaultAzureCredential", return_value="cred")
-    speech_config = MagicMock()
-    speech_config_cls = mocker.patch.object(
-        t2s_main.speech_sdk, "SpeechConfig", return_value=speech_config
-    )
-
-    result = _configure_speech_synthesizer(Voice.EN_US_ERIC)
-
-    speech_config_cls.assert_called_once_with(
-        token_credential="cred",
-        endpoint="https://test-resource.cognitiveservices.azure.com/",
-    )
-    assert speech_config.speech_synthesis_voice_name == Voice.EN_US_ERIC
-    assert result is speech_config
-
-
 def test_convert_success(mocker: MockerFixture):
-    mocker.patch.object(t2s_main, "_configure_speech_synthesizer")
+    mocker.patch.object(t2s_main, "configure_speech_recognizer")
     synthesizer = MagicMock()
     result = MagicMock()
     result.reason = "Completed"
@@ -45,7 +25,7 @@ def test_convert_success(mocker: MockerFixture):
 
 
 def test_convert_no_result(mocker: MockerFixture):
-    mocker.patch.object(t2s_main, "_configure_speech_synthesizer")
+    mocker.patch.object(t2s_main, "configure_speech_recognizer")
     synthesizer = MagicMock()
     synthesizer.speak_text_async.return_value.get.return_value = None
     mocker.patch.object(
@@ -58,7 +38,7 @@ def test_convert_no_result(mocker: MockerFixture):
 
 
 def test_convert_canceled(mocker: MockerFixture):
-    mocker.patch.object(t2s_main, "_configure_speech_synthesizer")
+    mocker.patch.object(t2s_main, "configure_speech_recognizer")
     synthesizer = MagicMock()
     result = MagicMock()
     result.reason = t2s_main.speech_sdk.ResultReason.Canceled

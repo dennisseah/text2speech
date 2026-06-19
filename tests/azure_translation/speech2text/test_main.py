@@ -5,11 +5,7 @@ import pytest
 from pytest_mock import MockerFixture
 
 from azure_translation.speech2text import main as s2t_main
-from azure_translation.speech2text.main import (
-    SpeechToText,
-    _configure_speech_recognizer,
-    _recognize_continuous,
-)
+from azure_translation.speech2text.main import SpeechToText, _recognize_continuous
 
 
 def _recognized_event(text: str) -> MagicMock:
@@ -53,22 +49,6 @@ def _make_recognizer(events: list[tuple[str, MagicMock]]) -> MagicMock:
 
     recognizer.start_continuous_recognition.side_effect = start
     return recognizer
-
-
-def test_configure_speech_recognizer(mocker: MockerFixture):
-    mocker.patch.object(s2t_main, "DefaultAzureCredential", return_value="cred")
-    speech_config = MagicMock()
-    speech_config_cls = mocker.patch.object(
-        s2t_main.speech_sdk, "SpeechConfig", return_value=speech_config
-    )
-
-    result = _configure_speech_recognizer()
-
-    speech_config_cls.assert_called_once_with(
-        token_credential="cred",
-        endpoint="https://test-resource.cognitiveservices.azure.com/",
-    )
-    assert result is speech_config
 
 
 def test_recognize_continuous_collects_segments():
@@ -122,7 +102,8 @@ def test_recognize_continuous_ignores_non_error_cancellation():
 
 
 def test_call_success(mocker: MockerFixture):
-    mocker.patch.object(s2t_main, "_configure_speech_recognizer")
+    mocker.patch.object(s2t_main, "configure_speech_recognizer")
+
     mocker.patch.object(s2t_main.speech_sdk, "SpeechRecognizer")
     mocker.patch.object(s2t_main.speech_sdk.audio, "AudioConfig")
     mocker.patch.object(
@@ -135,7 +116,7 @@ def test_call_success(mocker: MockerFixture):
 
 
 def test_call_canceled(mocker: MockerFixture):
-    mocker.patch.object(s2t_main, "_configure_speech_recognizer")
+    mocker.patch.object(s2t_main, "configure_speech_recognizer")
     mocker.patch.object(s2t_main.speech_sdk, "SpeechRecognizer")
     mocker.patch.object(s2t_main.speech_sdk.audio, "AudioConfig")
     mocker.patch.object(s2t_main, "_recognize_continuous", return_value=([], ["boom"]))

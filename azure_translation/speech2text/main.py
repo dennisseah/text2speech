@@ -1,24 +1,15 @@
 import threading
 
 import azure.cognitiveservices.speech as speech_sdk  # type: ignore[import-untyped]
-from azure.identity import DefaultAzureCredential
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from azure_translation.common.configure import configure_speech_recognizer
 
 
 class SpeechToTextSetting(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     speech_endpoint: str
-
-
-def _configure_speech_recognizer() -> speech_sdk.SpeechConfig:
-    credential = DefaultAzureCredential()
-    endpoint = SpeechToTextSetting().speech_endpoint  # type: ignore[call-arg]
-
-    speech_config = speech_sdk.SpeechConfig(
-        token_credential=credential, endpoint=endpoint
-    )
-    return speech_config
 
 
 def _recognize_continuous(
@@ -77,7 +68,9 @@ class SpeechToText:
             str: the recognized text.
         """
         speech_recognizer = speech_sdk.SpeechRecognizer(
-            speech_config=_configure_speech_recognizer(),
+            speech_config=configure_speech_recognizer(
+                endpoint=SpeechToTextSetting().speech_endpoint  # type: ignore[call-arg]
+            ),
             audio_config=speech_sdk.audio.AudioConfig(filename=audio_file),
         )
 
